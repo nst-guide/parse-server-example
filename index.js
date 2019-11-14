@@ -38,9 +38,6 @@ var s3Options = {
 var s3AccessKey = process.env.S3_ACCESS_KEY;
 var s3SecretKey = process.env.S3_SECRET_KEY;
 var s3Bucket = process.env.S3_BUCKET_NAME;
-var s3Options = {
-  directAccess: false
-};
 var filesAdapter = new S3Adapter(s3AccessKey, s3SecretKey, s3Bucket, s3Options);
 
 var api = new ParseServer({
