@@ -5,17 +5,12 @@ var express = require("express");
 var ParseServer = require("parse-server").ParseServer;
 var path = require("path");
 var S3Adapter = require("parse-server").S3Adapter;
-var AWS = require("aws-sdk");
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
 if (!databaseUri) {
   console.log("DATABASE_URI not specified, falling back to localhost.");
 }
-
-// Parse.File options
-// Set Digital Ocean Spaces endpoint
-var spacesEndpoint = new AWS.Endpoint(process.env.SPACES_ENDPOINT);
 
 // Define S3 options
 // NOTE: if you ever put private data in a Parse.File, you should
@@ -25,14 +20,9 @@ var s3Options = {
   bucket: process.env.S3_BUCKET_NAME,
   baseUrl: process.env.S3_BASE_URL,
   region: process.env.S3_REGION,
-  directAccess: true,
+  directAccess: process.env.S3_DIRECT_ACCESS || true,
   globalCacheControl: "public, max-age=31536000",
-  bucketPrefix: process.env.S3_BUCKET_PREFIX,
-  s3overrides: {
-    accessKeyId: process.env.S3_ACCESS_KEY,
-    secretAccessKey: process.env.S3_SECRET_KEY,
-    endpoint: spacesEndpoint
-  }
+  bucketPrefix: process.env.S3_BUCKET_PREFIX
 };
 
 var s3AccessKey = process.env.S3_ACCESS_KEY;
